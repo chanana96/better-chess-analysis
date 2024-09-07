@@ -1,11 +1,20 @@
 const axios = require("axios");
 require("dotenv").config();
 
+
 const lichessToken = process.env.LICHESS_TOKEN;
 const retrieveLastPlayedGameEndpoint = `https://lichess.org/api/games/user/lobster_facts`;
 
 const gameId = `AlHNoqjp`;
 const retrieveSpecificGame = `https://lichess.org/game/export/${gameId}`;
+
+
+
+const username = "imdaybert";
+
+const lichessToken = process.env.LICHESS_TOKEN;
+const retrieveLastPlayedGameEndpoint = `https://lichess.org/api/games/user/${username}`;
+
 
 const getLichessDataWithEvals = async () => {
   try {
@@ -47,6 +56,7 @@ const getLichessDataSimple = async () => {
   }
 };
 
+
 const checkOpeningExplorer = async (fen) => {
   try {
     const response = await axios.get("https://explorer.lichess.ovh/masters", {
@@ -87,3 +97,6 @@ module.exports = {
   getLichessDataSimple,
   checkOpeningExplorer,
 };
+
+
+module.exports = { getLichessDataWithEvals, getLichessDataSimple };

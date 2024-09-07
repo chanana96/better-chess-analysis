@@ -1,4 +1,5 @@
 const { Chess } = require("chess.js");
+
 const { findmistakes } = require("./findMistakes");
 const {
   getLichessDataWithEvals,
@@ -6,6 +7,8 @@ const {
 } = require("./lichessapi");
 
 const checkPlayerColor = () => {};
+
+
 
 const extractMoves = (pgn) => {
   // Remove lines that start with "[" and end with "]"
@@ -20,6 +23,7 @@ const getFen = async (moves) => {
   return chess.fen();
 };
 
+
 const getMistakeFens = async () => {
   const pgn = await getLichessDataWithEvals();
   const cleanpgn = extractMoves(await getLichessDataSimple());
@@ -33,3 +37,5 @@ const getMistakeFens = async () => {
 };
 
 module.exports = { getFen, extractMoves, getMistakeFens };
+module.exports = { getFen, extractMoves };
+
