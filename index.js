@@ -13,11 +13,20 @@ app.get("/lichess", (req, res) => {
   lichessapi.getLichessDataWithEvals();
 });
 
+
+app.get("/lichesssimple", async (req, res) => {
+  const mistakeFens = await calc.getMistakeFens();
+  const result = await Promise.all(
+    mistakeFens.map((fen) => lichessapi.checkOpeningExplorer(fen))
+  ); // Process each FEN
+
+
 app.get("/lichesssimple", async (req, res) => {
   const data = await lichessapi.getLichessDataSimple();
 
   const moves = await calc.extractMoves(data);
   const result = await calc.getFen(moves);
+
 
   console.log(result);
 });
