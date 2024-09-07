@@ -18,7 +18,8 @@ app.get("/lichesssimple", async (req, res) => {
   const mistakeFens = await calc.getMistakeFens();
   const result = await Promise.all(
     mistakeFens.map((fen) => lichessapi.checkOpeningExplorer(fen))
-  ); // Process each FEN
+  )
+}); // Process each FEN
 
 
 app.get("/lichesssimple", async (req, res) => {
@@ -34,3 +35,4 @@ app.get("/lichesssimple", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+

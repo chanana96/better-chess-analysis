@@ -2,16 +2,10 @@ const axios = require("axios");
 require("dotenv").config();
 
 
-const lichessToken = process.env.LICHESS_TOKEN;
-const retrieveLastPlayedGameEndpoint = `https://lichess.org/api/games/user/lobster_facts`;
-
 const gameId = `AlHNoqjp`;
 const retrieveSpecificGame = `https://lichess.org/game/export/${gameId}`;
 
-
-
-const username = "imdaybert";
-
+const username = process.env.USERNAME
 const lichessToken = process.env.LICHESS_TOKEN;
 const retrieveLastPlayedGameEndpoint = `https://lichess.org/api/games/user/${username}`;
 
