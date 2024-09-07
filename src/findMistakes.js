@@ -1,12 +1,12 @@
 // ODD NUMBER = WHITE, EVEN NUMBER = BLACK
 
-const findmistakes = (Pgn, cleanPgn) => {
-  let isBlack = false;
-
+const findmistakes = (Pgn, cleanPgn, isblack) => {
+  let isBlack = isblack;
   const pgn = Pgn;
   const cleanpgn = cleanPgn;
 
   function extractMoves(pgn) {
+    //extract moves from pgn with evals (eg. 32. fxe4 { [%eval -1.17] } 32... f3 { [%eval -0.14] } )
     // Remove metadata (everything in square brackets [])
     const movesOnly = pgn.replace(/\[.*?\]\s?/g, "");
 
@@ -18,7 +18,6 @@ const findmistakes = (Pgn, cleanPgn) => {
 
     // Remove any remaining spaces and newlines around moves
     const finalMoves = cleanedMoves.trim().replace(/\s+/g, " ");
-
     return finalMoves;
   }
 
@@ -42,12 +41,12 @@ const findmistakes = (Pgn, cleanPgn) => {
   }
 
   function findQuestionableMoves(moves, filterEven) {
-    // Initialize an empty array to hold the indices of moves with a '?' or '??'
+    // Initialize an empty array to hold the indices of moves with a '?' or '?? or ?!'
     let questionableIndices = [];
 
     // Iterate through the array of moves
     for (let i = 0; i < moves.length; i++) {
-      // Check if the current move contains '?' or '??'
+      // Check if the current move contains '?' or '?? or ?!'
       if (moves[i].includes("?") || moves[i].includes("?!")) {
         // Add the index of the move to the array
         questionableIndices.push(i);
@@ -106,7 +105,6 @@ const findmistakes = (Pgn, cleanPgn) => {
       // Add the subset to the results array
       results.push(subset);
     });
-
     return results;
   }
 
@@ -126,7 +124,6 @@ const findmistakes = (Pgn, cleanPgn) => {
       // Add the subset to the results array
       results.push(subset);
     });
-
     return results;
   }
 

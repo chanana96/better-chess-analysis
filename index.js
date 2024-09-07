@@ -9,8 +9,12 @@ app.get("/", (req, res) => {
   res.send("hello world");
 });
 
-app.get("/lichess", (req, res) => {
-  lichessapi.getLichessDataWithEvals();
+app.get("/lichess", async (req, res) => {
+  const mistakeFens = await calc.getMistakeFensSpecificGame();
+  const result = await Promise.all(
+    mistakeFens.map((fen) => lichessapi.checkOpeningExplorer(fen))
+  );
+  console.log(result);
 });
 
 app.get("/lichesssimple", async (req, res) => {
