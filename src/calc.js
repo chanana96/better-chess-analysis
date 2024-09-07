@@ -8,8 +8,6 @@ const {
 
 const checkPlayerColor = () => {};
 
-
-
 const extractMoves = (pgn) => {
   // Remove lines that start with "[" and end with "]"
   const filtered = pgn.replace(/\[.*?\]\n/g, "").trim();
@@ -22,7 +20,6 @@ const getFen = async (moves) => {
   chess.loadPgn(moves);
   return chess.fen();
 };
-
 
 const getMistakeFens = async () => {
   const pgn = await getLichessDataWithEvals();
@@ -37,5 +34,3 @@ const getMistakeFens = async () => {
 };
 
 module.exports = { getFen, extractMoves, getMistakeFens };
-module.exports = { getFen, extractMoves };
-
