@@ -3,15 +3,57 @@ require("dotenv").config();
 
 const lichessToken = process.env.LICHESS_TOKEN;
 const lichessid = process.env.LICHESS_ID;
+const gameId = `DHNZD0Yi`;
 
 const retrieveLastPlayedGameEndpoint = `https://lichess.org/api/games/user/${lichessid}`;
+const retrieveSpecificGameEndpoint = `https://lichess.org/game/export/${gameId}`;
+
+const getLichessDataWithEvalsSpecificGame = async () => {
+  try {
+    const response = await axios.get(retrieveSpecificGameEndpoint, {
+      headers: {
+        Authorization: `Bearer ${lichessToken}`,
+        Accept: "application/json",
+      },
+      params: {
+        pgnInJson: true,
+        clocks: false,
+        literate: true,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+const getLichessDataSimpleSpecificGame = async () => {
+  try {
+    const response = await axios.get(retrieveSpecificGameEndpoint, {
+      headers: {
+        Authorization: `Bearer ${lichessToken}`,
+        Accept: "application/json",
+      },
+      params: {
+        pgnInJson: true,
+        clocks: false,
+        evals: false,
+      },
+    });
+    return response.data.pgn;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
 
 const getLichessDataWithEvals = async () => {
   try {
     const response = await axios.get(retrieveLastPlayedGameEndpoint, {
       headers: {
         Authorization: `Bearer ${lichessToken}`,
-        "Content-Type": "application/x-ndjson",
+        Accept: "application/x-ndjson",
       },
       params: {
         max: 1,
@@ -32,7 +74,7 @@ const getLichessDataSimple = async () => {
     const response = await axios.get(retrieveLastPlayedGameEndpoint, {
       headers: {
         Authorization: `Bearer ${lichessToken}`,
-        "Content-Type": "application/x-chess-pgn",
+        Accept: "application/x-chess-pgn",
       },
       params: {
         max: 1,
@@ -50,7 +92,7 @@ const checkOpeningExplorer = async (fen) => {
   try {
     const response = await axios.get("https://explorer.lichess.ovh/masters", {
       headers: {
-        "Content-Type": "application/json",
+        Accept: "application/json",
       },
       params: {
         fen: fen,
@@ -62,18 +104,25 @@ const checkOpeningExplorer = async (fen) => {
         "https://explorer.lichess.ovh/lichess",
         {
           headers: {
-            "Content-Type": "application/json",
+            Accept: "application/json",
           },
           params: {
             fen: fen,
-            ratings: 2000, //ratings should be an array if multiple ratings
+            ratings: [2000, 2200, 2500],
           },
         }
       );
-
-      return fen, newresponse.data.moves;
+      return {
+        fen: fen,
+        moves: newresponse.data.moves.map((move) => move.san),
+        source: "lichess",
+      };
     } else {
-      return fen, response.data.moves;
+      return {
+        fen: fen,
+        moves: response.data.moves.map((move) => move.san),
+        source: "masters",
+      };
     }
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -85,4 +134,6 @@ module.exports = {
   getLichessDataWithEvals,
   getLichessDataSimple,
   checkOpeningExplorer,
+  getLichessDataSimpleSpecificGame,
+  getLichessDataWithEvalsSpecificGame,
 };
