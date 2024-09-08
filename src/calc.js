@@ -1,6 +1,6 @@
 const { Chess } = require("chess.js");
 require("dotenv").config();
-const { findmistakes } = require("./findMistakes");
+const { findMistakes } = require("./findMistakes");
 const {
   getLichessDataWithEvals,
   getLichessDataSimple,
@@ -28,7 +28,7 @@ const getFen = async (moves) => {
 const getMistakeFens = async () => {
   const pgn = await getLichessDataWithEvals();
   const cleanpgn = extractMovesFromSimplePgn(await getLichessDataSimple());
-  const mistakes = findmistakes(
+  const mistakes = findMistakes(
     pgn.pgn,
     cleanpgn,
     pgn.players.black.user.id === lichessid
@@ -46,7 +46,7 @@ const getMistakeFensSpecificGame = async () => {
     await getLichessDataSimpleSpecificGame()
   );
 
-  const mistakes = findmistakes(
+  const mistakes = findMistakes(
     pgn.pgn,
     cleanpgn,
     pgn.players.black.user.id === lichessid
